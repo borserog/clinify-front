@@ -1,5 +1,19 @@
+import { authFailed, loginAttempt, loginFailed, loginSuccessful } from '../core/auth/actions/auth.actions';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { AuthService } from '../core/auth/services/auth.service';
+import { User } from '../main/users/shared/model/user.model';
+import { MessageLevel } from '../shared/services/snackbar/message-level.enum';
+import { SnackbarService } from '../shared/services/snackbar/snackbar.service';
+
+
+export interface UserLogin {
+  username: string;
+  password: string;
+}
 
 interface LoginControls {
   username: AbstractControl;
@@ -9,30 +23,57 @@ interface LoginControls {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   controls: LoginControls;
 
+  errorMessage: string;
+
   constructor(
-    private fb: FormBuilder
-  ) { }
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+    private snackbarService: SnackbarService,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: [''],
-      password: ['']
+      password: [''],
     });
 
     this.controls = {
       username: this.loginForm.get('username'),
-      password: this.loginForm.get('password')
+      password: this.loginForm.get('password'),
     };
   }
 
-
   onSubmit(): void {
-    console.log(this.loginForm.value);
+    const user: UserLogin = this.loginForm.value;
+
+    this.store.dispatch(loginAttempt(user));
+
+    this.auth.lameAuthenticator(user).subscribe(
+      (authenticatedUser: User) => {
+        if (authenticatedUser) {
+
+          this.store.dispatch(loginSuccessful());
+
+          this.router.navigate(['/main/exams']);
+          // TODO mover mensagens para effects
+          this.snackbarService.open('Sucesso!', MessageLevel.SUCCESS);
+        } else {
+          this.store.dispatch(authFailed());
+          this.snackbarService.open('Deu Ruim!', MessageLevel.DANGER);
+        }
+      },
+      (error) => {
+        this.store.dispatch(loginFailed());
+        this.snackbarService.open(error.message, MessageLevel.DANGER);
+      }
+    );
   }
 }

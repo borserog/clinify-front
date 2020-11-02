@@ -7,8 +7,12 @@
 # Only exists if Bazel was run
 /bazel-out
 
+# Todo files
+TODO.md
+
 # dependencies
 /node_modules
+/json-server
 
 # profiling files
 chrome-profiler-events*.json
