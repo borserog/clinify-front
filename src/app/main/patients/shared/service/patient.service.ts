@@ -3,39 +3,33 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import {Patient, PatientDTO} from '../../../main/patients/model/patient.model';
+import { Patient } from '../model/patient.model';
+import { IPatientService } from '../model/patient-service.model';
 
+/**
+ * @deprecated: Service deprecated in favor of PatientFirestoreService
+ */
 @Injectable({
   providedIn: 'root'
 })
-export class PatientService {
+export class PatientService implements IPatientService {
 
   private static readonly RESOURCE_URL = environment.apiUrl + 'patients';
 
   constructor(
     private http: HttpClient
   ) { }
-
-  getUserByUsername(username: string): Observable<Patient> {
-    return this.http.get<Patient[]>(PatientService.RESOURCE_URL, { params: { username }}).pipe(
-      map((queryReturn: Patient[]) => {
-        if (queryReturn.length === 0) {
-          throw Error('Paciente Inexistente');
-        }
-
-        const firstPatientFound: Patient = queryReturn[0];
-
-        return firstPatientFound;
-      })
-    );
+  getPatientById(id: string | number): Observable<Patient> {
+    throw new Error('Method not implemented.');
   }
 
-  getAllPatients(): Observable<Patient[]> {
-    return this.http.get<PatientDTO[]>(
+
+  getAll(): Observable<Patient[]> {
+    return this.http.get<Patient[]>(
       PatientService.RESOURCE_URL
     ).pipe(
-      map((patientsDTO: PatientDTO[]): Patient[] => {
-        return patientsDTO.map((patientDTO: PatientDTO): Patient => {
+      map((patientsDTO: Patient[]): Patient[] => {
+        return patientsDTO.map((patientDTO: Patient): Patient => {
           return {
             ...patientDTO,
           };
@@ -44,18 +38,24 @@ export class PatientService {
     );
   }
 
-  registerPatient(userRegistrationData: Partial<Patient>): any {
+  registerPatient(userRegistrationData: Patient): any {
     const { name, birthDate, healthPlan } = userRegistrationData;
-    const patientDTO: PatientDTO = {
+    const patientDTO = {
       name,
       birthDate,
       healthPlan
     };
 
-    return this.http.post<PatientDTO>(
+    return this.http.post<Patient>(
       PatientService.RESOURCE_URL,
       patientDTO,
       { headers: {'Content-Type': 'application/json; charset=utf-8'} }
     );
+  }
+
+  removeById(examId: number): Observable<Patient> {
+    const id = examId.toString();
+
+    return this.http.delete<Patient>(PatientService.RESOURCE_URL + `/${id}`);
   }
 }
