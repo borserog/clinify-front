@@ -1,13 +1,15 @@
 import { FirestoreModule } from './firestore/firestore.module';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
+    BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AuthModule,
     FirestoreModule
@@ -15,7 +17,16 @@ import { AuthModule } from './auth/auth.module';
   exports: [
     HttpClientModule,
     AuthModule,
-    FirestoreModule
-  ]
+    FirestoreModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+  ],
+  // providers: [
+  //   {
+  //     provide: HTTP_INTERCEPTORS,
+  //     useClass: HttpSuccessInterceptor,
+  //     multi: true
+  //   }
+  // ]
 })
 export class CoreModule { }

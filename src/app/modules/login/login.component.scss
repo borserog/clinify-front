@@ -1,0 +1,55 @@
+@import '../../styles/abstracts/mixins';
+@import '../../styles/abstracts/variables';
+@import '../../styles/base/animations';
+
+
+.card-container {
+  position: absolute;
+  top: 10rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rem;
+  height: 45rem;
+
+  mat-card {
+    width: 100%;
+    animation: $animation-popIn-time popIn;
+
+    mat-card-header {
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    mat-card-content {
+      .form-container {
+        padding-top: 5rem;
+        display: grid;
+        grid-template-rows: 1fr 1fr 1.5fr;
+        gap: 1rem;
+
+        &__actions {
+          padding-top: 1.5rem;
+          display: grid;
+          grid-template-rows: repeat(2, 1fr);
+          align-items: center;
+
+          &__new-user {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 800;
+    display: block;
+    margin: 3rem 0 7rem 0 !important;
+    text-align: center;
+}
+
+
+

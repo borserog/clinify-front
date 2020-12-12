@@ -1,0 +1,41 @@
+
+<div class="card-container">
+  <mat-card>
+    <h1>Clinify App</h1>
+    <mat-card-header align="center">
+      <mat-card-title>Check-in</mat-card-title>
+      <mat-card-subtitle
+      >Realize o check-in para a sua consulta</mat-card-subtitle
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <div class="checkin-form">
+        <mat-form-field appearance="outline">
+          <mat-label> Código da consulta</mat-label>
+          <input
+            autocomplete="off"
+            [(ngModel)]="inputCode"
+            matInput
+            type="text"
+            maxlength="40"
+            placeholder="Insira o código"
+            required
+          />
+        </mat-form-field>
+        <div class="checkin-action__container">
+          <button
+            class="checkin-action__button"
+            mat-raised-button
+            type="submit"
+            color="primary"
+            (click)="checkin()"
+          >
+            Check-in
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+
+
+  </mat-card>
+</div>

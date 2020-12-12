@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {map, tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/main/users/shared/model/user.model';
-import { UserService } from 'src/app/main/users/shared/service/user.service';
-import {UserFirestoreService} from '../../../main/users/shared/service/user.firestore.service';
+import { User } from 'src/app/modules/main/users/shared/model/user.model';
+import { UserService } from 'src/app/modules/main/users/shared/service/user.service';
+import {UserFirestoreService} from '../../../modules/main/users/shared/service/user.firestore.service';
 
 interface LoginData {
   username: string;

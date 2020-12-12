@@ -1,0 +1,25 @@
+@import '../../../styles/base/animations';
+@import '../../../styles/abstracts/variables';
+
+mat-card {
+
+  table {
+    width: 100%;
+
+    .mat-column-username {
+      width: 35%;
+    }
+
+    .mat-column-email {
+      width: 35%;
+    }
+
+    .mat-column-active {
+      width: 10%;
+    }
+
+    .mat-column-createdOn {
+      width: 20%;
+    }
+  }
+}
