@@ -19,8 +19,7 @@ export class ExamsComponent implements OnInit {
   columnsToDisplay = ['patient', 'examCode', 'healthPlan', 'date', 'checkIn', 'actionsRow'];
 
   constructor(
-    private depExamService: ExamService,
-    private examService: ExamFirestoreService,
+    private examService: ExamService,
     private snackbar: MessageService
   ) { }
 

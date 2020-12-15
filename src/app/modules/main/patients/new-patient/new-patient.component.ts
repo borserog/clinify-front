@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageLevel } from 'src/app/shared/services/snackbar/message-level.enum';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PatientFirestoreService } from '../shared/service/patient-firestore.service';
+import {PatientService} from '../shared/service/patient.service';
 
 interface SignUpControls {
   name: AbstractControl;
@@ -30,7 +31,7 @@ export class NewPatientComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private patientFirestoreService: PatientFirestoreService,
+    private patientService: PatientService,
     private snackbar: MessageService,
     public dialogRef: MatDialogRef<NewPatientComponent>
   ) {
@@ -55,7 +56,7 @@ export class NewPatientComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.patientFirestoreService.registerPatient(this.signUpForm.value).pipe(
+    this.patientService.registerPatient(this.signUpForm.value).pipe(
       takeUntil(this.componentDestroyedSubject)
     )
       .subscribe(() => {

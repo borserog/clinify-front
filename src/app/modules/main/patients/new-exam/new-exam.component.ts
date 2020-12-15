@@ -38,8 +38,7 @@ export class NewExamComponent implements OnInit {
     public dialogRef: MatDialogRef<NewExamComponent>,
     private message: MessageService,
     private fb: FormBuilder,
-    private depExamService: ExamService,
-    private examService: ExamFirestoreService
+    private examService: ExamService,
   ) { }
 
   ngOnInit(): void {
@@ -50,8 +49,10 @@ export class NewExamComponent implements OnInit {
   onSubmit(): void {
     const examRequest: ExamRequest = {
       ...this.newExamForm.value,
-      code: generateExamCode()
+      date: new Date(this.newExamForm.get('date').value)
     };
+
+    console.log(examRequest);
 
     this.examService.registerExam(examRequest).pipe(
       take(1)

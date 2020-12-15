@@ -13,6 +13,7 @@ import {
   listingStatusInitialState,
   createListingStatusLoadingState, createListingStatusErrorState, createListingStatusLoadedState
 } from '../../../shared/model/component-status.model';
+import {PatientService} from './shared/service/patient.service';
 
 @Component({
   selector: 'app-patients',
@@ -31,6 +32,7 @@ export class PatientsComponent implements OnInit {
 
   constructor(
     private patientFirestoreService: PatientFirestoreService,
+    private patientService: PatientService,
     private snackbar: MessageService,
     public dialog: MatDialog
   ) {
@@ -67,7 +69,7 @@ export class PatientsComponent implements OnInit {
   private loadPatients(): void {
     this.status$.next(createListingStatusLoadingState('Carregando pacientes'));
 
-    this.patientFirestoreService.getAll().pipe(
+    this.patientService.getAll().pipe(
       take(1)
     )
       .subscribe((patients: Patient[]): void => {

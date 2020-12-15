@@ -5,9 +5,6 @@ import {environment} from 'src/environments/environment';
 import {Exam, ExamRequest} from '../model/exam.model';
 import {IExamService} from '../model/exam-service.model';
 
-/**
- * @deprecated use firestore
- */
 @Injectable({
   providedIn: 'root'
 })
@@ -26,10 +23,8 @@ export class ExamService implements IExamService {
     return this.http.post<Exam>(ExamService.RESOURCE_URL, newExam);
   }
 
-  removeById(examId: number): Observable<any> {
-    const id = examId.toString();
-
-    return this.http.delete<Exam>(ExamService.RESOURCE_URL + `/${id}`);
+  removeById(examId: number | string): Observable<any> {
+    return this.http.delete<Exam>(ExamService.RESOURCE_URL + `/${examId}`);
   }
 
   checkIn(examCode: string): void {
