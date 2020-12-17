@@ -27,6 +27,11 @@ export class ExamService implements IExamService {
     return this.http.delete<Exam>(ExamService.RESOURCE_URL + `/${examId}`);
   }
 
-  checkIn(examCode: string): void {
+  checkIn(examCode: string): Observable<Exam> {
+    return this.http.patch<Exam>(ExamService.RESOURCE_URL + '/checkIn', examCode);
+  }
+
+  finishExam(examId: number | string): Observable<Exam> {
+    return this.http.patch<Exam>(ExamService.RESOURCE_URL + '/finish/' + examId, {});
   }
 }

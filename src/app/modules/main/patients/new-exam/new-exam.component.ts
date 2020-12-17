@@ -52,8 +52,6 @@ export class NewExamComponent implements OnInit {
       date: new Date(this.newExamForm.get('date').value)
     };
 
-    console.log(examRequest);
-
     this.examService.registerExam(examRequest).pipe(
       take(1)
     )

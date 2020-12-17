@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {ExamFirestoreService} from '../main/exams/shared/service/exam-firestore.service';
+import {Component, OnInit} from '@angular/core';
+import {ExamService} from '../main/exams/shared/service/exam.service';
+import {take} from 'rxjs/operators';
+import {MessageService} from '../../shared/services/snackbar/message.service';
+import {MessageLevel} from '../../shared/services/snackbar/message-level.enum';
 
 @Component({
   selector: 'app-checkin',
@@ -10,13 +13,18 @@ export class CheckinComponent implements OnInit {
   inputCode: string;
 
   constructor(
-    private examService: ExamFirestoreService
+    private examService: ExamService,
+    private message: MessageService
   ) { }
 
   ngOnInit(): void {
   }
 
-  checkin(): void {
-    this.examService.checkIn(this.inputCode);
+  checkIn(): void {
+    this.examService.checkIn(this.inputCode).pipe((take(1))).subscribe(() => {
+      this.message.open('Check-in realizado com sucesso', MessageLevel.SUCCESS);
+    }, () => {
+      this.message.open('Deu ruim no seu check-in parça', MessageLevel.DANGER);
+    });
   }
 }

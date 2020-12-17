@@ -1,11 +1,15 @@
-import { Observable, Subject } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { MessageLevel } from 'src/app/shared/services/snackbar/message-level.enum';
-import { MessageService } from 'src/app/shared/services/snackbar/message.service';
-import { Exam } from './shared/model/exam.model';
-import { ExamService } from './shared/service/exam.service';
-import {ExamFirestoreService} from './shared/service/exam-firestore.service';
+import {Observable, Subject} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {map, take} from 'rxjs/operators';
+import {MessageLevel} from 'src/app/shared/services/snackbar/message-level.enum';
+import {MessageService} from 'src/app/shared/services/snackbar/message.service';
+import {Exam} from './shared/model/exam.model';
+import {ExamService} from './shared/service/exam.service';
+
+interface Exams {
+  active: Exam[];
+  finished: Exam[];
+}
 
 @Component({
   selector: 'app-exams',
@@ -13,15 +17,16 @@ import {ExamFirestoreService} from './shared/service/exam-firestore.service';
   styleUrls: ['./exams.component.scss']
 })
 export class ExamsComponent implements OnInit {
-  readonly examsSubject = new Subject<Exam[]>();
-  exams$: Observable<Exam[]>;
+  readonly examsSubject = new Subject<Exams>();
+  exams$: Observable<Exams>;
 
   columnsToDisplay = ['patient', 'examCode', 'healthPlan', 'date', 'checkIn', 'actionsRow'];
 
   constructor(
     private examService: ExamService,
     private snackbar: MessageService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.exams$ = this.examsSubject;
@@ -29,8 +34,13 @@ export class ExamsComponent implements OnInit {
     this.loadExams();
   }
 
-  startExam(exam: Exam): void {
-    console.log(`exam started for patient ${exam.patient.name}`);
+  finishExam(examId: number): void {
+    this.examService.finishExam(examId).pipe(take(1)).subscribe(() => {
+      this.loadExams();
+      this.snackbar.open('Exames atualizados', MessageLevel.INFO);
+    }, (err) => {
+      this.snackbar.open(err.message, MessageLevel.DANGER);
+    });
   }
 
   deleteExam(exam: Exam): void {
@@ -42,9 +52,30 @@ export class ExamsComponent implements OnInit {
   }
 
   private loadExams(): void {
-    this.examService.getAll().pipe(take(1))
-    .subscribe((exams: Exam[]): void => {
-      this.examsSubject.next(exams);
-    });
+    this.examService.getAll().pipe(
+      map((fetchedExams) => {
+        return fetchedExams.reduce((acc, exam): Exams => {
+          if (exam.finished) {
+            acc.finished.push(exam);
+
+            return {
+              ...acc,
+              finished: acc.finished
+            };
+          }
+
+          acc.active.push(exam);
+
+          return {
+            ...acc,
+            active: acc.active
+          };
+        }, {active: [], finished: []} as Exams);
+      }),
+      take(1)
+    )
+      .subscribe((exams: Exams): void => {
+        this.examsSubject.next(exams);
+      });
   }
 }
