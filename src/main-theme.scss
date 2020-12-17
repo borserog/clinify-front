@@ -1,0 +1,24 @@
+@import '../node_modules/@angular/material/theming';
+
+@include mat-core();
+
+$clinify-primary: mat-palette($mat-cyan, 400);
+$clinify-secondary: mat-palette($mat-lime, 400);
+
+$clinify-app-theme: mat-light-theme((
+  color: (
+    primary: $clinify-primary,
+    accent: $clinify-secondary,
+  )
+));
+
+@include angular-material-theme($clinify-app-theme);
+
+$custom-typography: mat-typography-config(
+  $font-family: 'Exo, SansSerif',
+);
+
+@include mat-base-typography($custom-typography);
+
+// Override typography for all Angular Material, including mat-base-typography and all components.
+@include angular-material-typography($custom-typography);
