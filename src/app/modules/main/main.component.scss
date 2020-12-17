@@ -2,6 +2,21 @@ mat-sidenav-container {
   height: 100%;
 }
 
+.toolbar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.title {
+  padding-left: 1.2rem;
+  padding-top: 0.2rem;
+}
+
+.title, .icon {
+  color: white;
+}
+
 .main-container {
   padding: 5rem 0;
   max-width: 120rem;

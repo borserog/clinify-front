@@ -46,19 +46,20 @@
                 >
                   <mat-icon (click)="openNewExamDialog(patient)">assignment</mat-icon>
                 </button>
-                <button
-                  mat-icon-button
-                  color="warn"
-                  aria-label="Remove a consulta"
-                >
-                  <mat-icon (click)="deletePatient(patient)">delete</mat-icon>
-                </button>
+<!--                <button-->
+<!--                  mat-icon-button-->
+<!--                  color="warn"-->
+<!--                  aria-label="Remove a consulta"-->
+<!--                >-->
+<!--                  <mat-icon (click)="deletePatient(patient)">delete</mat-icon>-->
+<!--                </button>-->
               </div>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
           <tr mat-row *matRowDef="let exam; columns: columnsToDisplay"></tr>
+
         </table>
     </ng-container>
     <ng-template #statusMessage>

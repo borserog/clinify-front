@@ -1,7 +1,7 @@
 import {Patient} from 'src/app/modules/main/patients/shared/model/patient.model';
 import {NewExamComponent} from './new-exam/new-exam.component';
 import {MessageService} from '../../../shared/services/snackbar/message.service';
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import {delay, map, take} from 'rxjs/operators';
 import {MessageLevel} from 'src/app/shared/services/snackbar/message-level.enum';
@@ -14,17 +14,20 @@ import {
   createListingStatusLoadingState, createListingStatusErrorState, createListingStatusLoadedState
 } from '../../../shared/model/component-status.model';
 import {PatientService} from './shared/service/patient.service';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html',
   styleUrls: ['./patients.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PatientsComponent implements OnInit {
   readonly patientsSubject = new Subject<Patient[]>();
 
   patients$: Observable<Patient[]>;
+
+  patientsDataSource: MatTableDataSource<Observable<any>>;
 
   status$ = new BehaviorSubject<ListingStatus>(listingStatusInitialState);
 
@@ -83,5 +86,4 @@ export class PatientsComponent implements OnInit {
         this.status$.next(createListingStatusErrorState('Ocorreu um erro. Tente novamente!'));
       }));
   }
-
 }

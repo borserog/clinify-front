@@ -3,12 +3,12 @@
         <app-side-nav-items (optionClicked)="sidenav.toggle()"></app-side-nav-items>
     </mat-sidenav>
     <mat-sidenav-content>
-      <mat-toolbar color="primary">
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="sidenav.toggle()">
+      <mat-toolbar class="toolbar" color="primary">
+        <button mat-icon-button class="icon" aria-label="Example icon-button with menu icon" (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
         <div>
-          <span>Clinify</span>
+          <h3 class="title">Clinify</h3>
         </div>
       </mat-toolbar>
       <main class="main-container">
@@ -16,7 +16,6 @@
       </main>
     </mat-sidenav-content>
 </mat-sidenav-container>
-
 
 
 

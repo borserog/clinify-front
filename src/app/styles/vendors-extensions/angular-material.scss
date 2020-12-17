@@ -9,3 +9,7 @@
 .info-snackbar {
   background-color: $app-info;
 }
+
+button[color="primary"]:not(.mat-icon-button) .mat-button-wrapper {
+  color: white;
+}
